@@ -39,7 +39,7 @@ def _ensure_even_hw(arr):
 
 
 def gif_to_mp4(gif_path: str, mp4_path: str, fps: int = 12, verbose: int = 1):
-    """Transcode a GIF to H.264 MP4, forcing RGB frames and ensuring ≥2 frames."""
+    """Transcode a GIF to H.264 MP4, force RGB frames and ensure ≥2 decodable frames."""
     reader = imageio.get_reader(gif_path)
     frames = []
     for frame in reader:
@@ -62,9 +62,20 @@ def gif_to_mp4(gif_path: str, mp4_path: str, fps: int = 12, verbose: int = 1):
         writer.append_data(f)
     writer.close()
 
+    # ✅ Check MP4 validity after writing
+    try:
+        dec_reader = imageio.get_reader(mp4_path)
+        n = dec_reader.count_frames()
+        dec_reader.close()
+        if n < 2:
+            raise RuntimeError(f"MP4 has only {n} decodable frame(s), skipping.")
+    except Exception as e:
+        raise RuntimeError(f"Post-transcode decode failed: {e}")
+
     if verbose:
-        print(f"    Transcoded {gif_path} → {mp4_path} with {len(frames)} frames")
+        print(f"    Transcoded {gif_path} → {mp4_path} with {len(frames)} frames (MP4: {n} decodable)")
     return mp4_path
+
 
 
 # ---------- Labels and Prompts ----------
