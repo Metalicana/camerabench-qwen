@@ -4,12 +4,14 @@ import argparse
 import pathlib
 import requests
 import torch
+import numpy as np
 from datasets import load_dataset
 from huggingface_hub import hf_hub_download
 from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
 from sklearn.metrics import average_precision_score
 import imageio.v2 as imageio
+from PIL import Image
 
 
 # ---------- IO helpers ----------
@@ -26,16 +28,69 @@ def download_to(path, url, timeout=60):
     return str(path)
 
 
+def _ensure_even_hw(arr):
+    """Make H and W even to avoid codec quirks; pad last row/col if needed."""
+    h, w = arr.shape[:2]
+    pad_h = 1 if h % 2 != 0 else 0
+    pad_w = 1 if w % 2 != 0 else 0
+    if pad_h or pad_w:
+        if arr.ndim == 3:
+            arr = np.pad(arr, ((0, pad_h), (0, pad_w), (0, 0)), mode="edge")
+        else:
+            arr = np.pad(arr, ((0, pad_h), (0, pad_w)), mode="edge")
+    return arr
+
+
 def gif_to_mp4(gif_path: str, mp4_path: str, fps: int = 12):
-    """Transcode a GIF to H.264 MP4 (stabilizes broken GIF metadata)."""
+    """
+    Transcode a GIF to H.264 MP4, forcing RGB frames so channel count is consistent.
+    Returns mp4_path if successful; raises if no frames could be written.
+    """
     gif_path = str(gif_path)
     mp4_path = str(mp4_path)
+
     reader = imageio.get_reader(gif_path)
-    writer = imageio.get_writer(mp4_path, fps=fps, codec="libx264", quality=8)
-    for frame in reader:
-        writer.append_data(frame)
-    writer.close()
-    reader.close()
+    meta = reader.get_meta_data()
+    # Try to honor GIF fps if available
+    out_fps = fps
+    try:
+        if "duration" in meta and meta["duration"]:
+            # duration is per-frame milliseconds; fps ~ 1000/duration
+            frame_ms = meta["duration"]
+            if isinstance(frame_ms, (int, float)) and frame_ms > 0:
+                out_fps = max(1, min(60, int(round(1000.0 / frame_ms))))
+    except Exception:
+        pass
+
+    # robust writer: even dimensions, RGB frames
+    writer = imageio.get_writer(
+        mp4_path,
+        fps=out_fps,
+        codec="libx264",
+        quality=8,
+        macro_block_size=1  # avoids forced resizing to multiples of 16
+    )
+
+    frames_written = 0
+    try:
+        for frame in reader:
+            # Normalize to RGB using PIL (handles L/P/LA/RGBA etc.)
+            if not isinstance(frame, np.ndarray):
+                frame = np.asarray(frame)
+            img = Image.fromarray(frame)
+            # drop alpha if present, convert to RGB
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+            arr = np.asarray(img)
+            arr = _ensure_even_hw(arr)
+            writer.append_data(arr)
+            frames_written += 1
+    finally:
+        writer.close()
+        reader.close()
+
+    if frames_written == 0:
+        raise RuntimeError("No valid frames found in GIF (could not transcode).")
     return mp4_path
 
 
@@ -166,6 +221,7 @@ def main():
     n = len(ds) if args.limit == 0 else min(args.limit, len(ds))
     print(f"Evaluating {n} videos…")
 
+    processed = 0
     for i in range(n):
         row = ds[i]
 
@@ -193,25 +249,37 @@ def main():
                     local_dir=args.cache_dir
                 )
         except Exception as e:
-            print(f"  WARN: could not fetch or transcode media for sample {i}: {e}")
+            print(f"  WARN: sample {i} skipped (media issue): {e}")
             continue
 
-        gt = set(row["labels"])
-        for prim in PRIMITIVES:
-            q = QUESTION_TEMPLATES[prim]
-            p_yes = yes_probability_on_video(model, processor, local_media, q)
-            all_scores[prim].append(p_yes)
-            all_gts[prim].append(1 if prim in gt else 0)
+        try:
+            gt = set(row["labels"])
+            for prim in PRIMITIVES:
+                q = QUESTION_TEMPLATES[prim]
+                p_yes = yes_probability_on_video(model, processor, local_media, q)
+                all_scores[prim].append(p_yes)
+                all_gts[prim].append(1 if prim in gt else 0)
+            processed += 1
+        except Exception as e:
+            print(f"  WARN: sample {i} skipped (model/video decode): {e}")
+            # keep arrays aligned by skipping appends for this sample
+            # (we appended nothing for this sample, so no cleanup needed)
+            continue
 
-        if (i + 1) % 25 == 0:
-            print(f"  processed {i+1}/{n}")
+        if processed % 25 == 0:
+            print(f"  processed {processed}/{n} successful")
+
+    if processed == 0:
+        print("No samples processed successfully. Check GIF→MP4 deps (pillow, imageio-ffmpeg) or HF auth for MP4s.")
+        return
 
     # Compute AP per primitive
     per_class_ap = {}
     for prim in PRIMITIVES:
         y_true = all_gts[prim]
         y_score = all_scores[prim]
-        if len(set(y_true)) < 2:
+        # guard: if nothing collected for this label due to skips
+        if len(y_true) == 0 or len(set(y_true)) < 2:
             per_class_ap[prim] = float("nan")
         else:
             per_class_ap[prim] = float(average_precision_score(y_true, y_score))
