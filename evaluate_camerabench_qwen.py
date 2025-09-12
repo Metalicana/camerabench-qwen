@@ -1,18 +1,23 @@
 # evaluate_camerabench_qwen.py
 import os
 import argparse
-import pathlib, requests
+import pathlib
+import requests
 import torch
 from datasets import load_dataset
 from huggingface_hub import hf_hub_download
 from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
 from sklearn.metrics import average_precision_score
+import imageio.v2 as imageio
 
-def download_to(path, url):
+
+# ---------- IO helpers ----------
+def download_to(path, url, timeout=60):
+    """Download a URL to a local path."""
     path = pathlib.Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    r = requests.get(url, stream=True, timeout=60)
+    r = requests.get(url, stream=True, timeout=timeout)
     r.raise_for_status()
     with open(path, "wb") as f:
         for chunk in r.iter_content(1 << 20):
@@ -20,6 +25,21 @@ def download_to(path, url):
                 f.write(chunk)
     return str(path)
 
+
+def gif_to_mp4(gif_path: str, mp4_path: str, fps: int = 12):
+    """Transcode a GIF to H.264 MP4 (stabilizes broken GIF metadata)."""
+    gif_path = str(gif_path)
+    mp4_path = str(mp4_path)
+    reader = imageio.get_reader(gif_path)
+    writer = imageio.get_writer(mp4_path, fps=fps, codec="libx264", quality=8)
+    for frame in reader:
+        writer.append_data(frame)
+    writer.close()
+    reader.close()
+    return mp4_path
+
+
+# ---------- CameraBench taxonomy ----------
 PRIMITIVES = [
     # Translation
     "dolly-in", "dolly-out", "pedestal-up", "pedestal-down", "truck-right", "truck-left",
@@ -50,12 +70,14 @@ QUESTION_TEMPLATES = {
 }
 
 FAMILIES = {
-    "Translation": ["dolly-in","dolly-out","pedestal-up","pedestal-down","truck-right","truck-left"],
-    "Zooming":     ["zoom-in","zoom-out"],
-    "Rotation":    ["pan-right","pan-left","tilt-up","tilt-down","roll-CW","roll-CCW"],
+    "Translation": ["dolly-in", "dolly-out", "pedestal-up", "pedestal-down", "truck-right", "truck-left"],
+    "Zooming":     ["zoom-in", "zoom-out"],
+    "Rotation":    ["pan-right", "pan-left", "tilt-up", "tilt-down", "roll-CW", "roll-CCW"],
     "Static":      ["no-motion"],
 }
 
+
+# ---------- Qwen helpers ----------
 def load_qwen(model_id: str):
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         model_id, torch_dtype="auto", device_map="auto"
@@ -63,19 +85,23 @@ def load_qwen(model_id: str):
     processor = AutoProcessor.from_pretrained(model_id)
     return model, processor
 
+
 @torch.no_grad()
 def yes_probability_on_video(model, processor, media_path: str, question: str) -> float:
     """
-    Returns P(yes) from first generated token; falls back to short-text parsing.
+    Return P(yes) using the first generated token distribution.
+    Fallback: generate a couple tokens and parse "yes"/"no".
     """
     device = next(model.parameters()).device
+
     messages = [{
         "role": "user",
         "content": [
             {"type": "video", "video": media_path},
-            {"type": "text", "text": question}
+            {"type": "text", "text": question},
         ],
     }]
+
     text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     image_inputs, video_inputs = process_vision_info(messages)
     inputs = processor(
@@ -83,39 +109,47 @@ def yes_probability_on_video(model, processor, media_path: str, question: str) -
         padding=True, return_tensors="pt"
     ).to(device)
 
+    # First-token probability path
     out = model.generate(
         **inputs,
         max_new_tokens=1,
         do_sample=False,
         return_dict_in_generate=True,
-        output_scores=True
+        output_scores=True,
+        temperature=None,  # avoid irrelevant warning
     )
     first_logits = out.scores[0][0]  # (vocab,)
     probs = torch.softmax(first_logits, dim=-1)
+
     tok = processor.tokenizer
     vocab = tok.get_vocab()
 
-    def to_ids(cands): 
+    def to_ids(cands):
         return [tok.convert_tokens_to_ids(c) for c in cands if c in vocab]
 
-    yes_ids = to_ids(["yes","Yes","YES"])
-    no_ids  = to_ids(["no","No","NO"])
+    yes_ids = to_ids(["yes", "Yes", "YES"])
+    no_ids = to_ids(["no", "No", "NO"])
     if yes_ids or no_ids:
         return float(probs[yes_ids].sum().item() if yes_ids else 0.0)
 
-    # Fallback: short text generation then parse first word
-    seq = model.generate(**inputs, max_new_tokens=3, do_sample=False)
-    txt = processor.batch_decode(seq, skip_special_tokens=True)[0].strip().lower()
-    if txt.startswith("yes"): return 1.0
-    if txt.startswith("no"):  return 0.0
+    # Fallback: short decode then check prefix
+    seq = model.generate(**inputs, max_new_tokens=3, do_sample=False, temperature=None)
+    txt = tok.batch_decode(seq, skip_special_tokens=True)[0].strip().lower()
+    if txt.startswith("yes"):
+        return 1.0
+    if txt.startswith("no"):
+        return 0.0
     return 0.5
 
+
+# ---------- Main ----------
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="Qwen/Qwen2.5-VL-7B-Instruct")
     ap.add_argument("--split", default="test")
     ap.add_argument("--limit", type=int, default=0, help="limit number of videos; 0=all")
     ap.add_argument("--cache_dir", default="./cache_videos", help="where to store downloaded media")
+    ap.add_argument("--gif_fps", type=int, default=12, help="fps used when transcoding GIF->MP4")
     args = ap.parse_args()
 
     os.makedirs(args.cache_dir, exist_ok=True)
@@ -127,7 +161,7 @@ def main():
     model, processor = load_qwen(args.model)
 
     all_scores = {k: [] for k in PRIMITIVES}
-    all_gts    = {k: [] for k in PRIMITIVES}
+    all_gts = {k: [] for k in PRIMITIVES}
 
     n = len(ds) if args.limit == 0 else min(args.limit, len(ds))
     print(f"Evaluating {n} videos…")
@@ -135,14 +169,23 @@ def main():
     for i in range(n):
         row = ds[i]
 
-        # Prefer public GIF URL if present; otherwise try MP4 via hf_hub (may require auth)
+        # Prefer public GIF URL; if present, download & transcode to MP4 once.
         gif_url = row.get("Video") or row.get("video") or row.get("video_gif") or row.get("gif")
         local_media = None
         try:
             if gif_url and str(gif_url).endswith(".gif"):
-                fname = os.path.basename(str(gif_url).split("?")[0])
-                local_media = download_to(os.path.join(args.cache_dir, fname), gif_url)
+                gif_name = os.path.basename(str(gif_url).split("?")[0])
+                gif_path = os.path.join(args.cache_dir, gif_name)
+                if not os.path.exists(gif_path):
+                    gif_path = download_to(gif_path, gif_url)
+                mp4_name = os.path.splitext(gif_name)[0] + ".mp4"
+                mp4_path = os.path.join(args.cache_dir, mp4_name)
+                if not os.path.exists(mp4_path):
+                    print(f"  transcoding GIF -> MP4: {gif_name} -> {mp4_name}")
+                    gif_to_mp4(gif_path, mp4_path, fps=args.gif_fps)
+                local_media = mp4_path
             else:
+                # Try original MP4 path from repo (requires HF auth if gated)
                 rel_path = row["path"]  # e.g., "videos/xxx.mp4"
                 local_media = hf_hub_download(
                     repo_id="syCen/CameraBench",
@@ -150,12 +193,10 @@ def main():
                     local_dir=args.cache_dir
                 )
         except Exception as e:
-            print(f"  WARN: could not fetch media for sample {i}: {e}")
+            print(f"  WARN: could not fetch or transcode media for sample {i}: {e}")
             continue
 
         gt = set(row["labels"])
-
-        # Ask one yes/no per primitive
         for prim in PRIMITIVES:
             q = QUESTION_TEMPLATES[prim]
             p_yes = yes_probability_on_video(model, processor, local_media, q)
@@ -165,7 +206,7 @@ def main():
         if (i + 1) % 25 == 0:
             print(f"  processed {i+1}/{n}")
 
-    # Compute AP per primitive and aggregates
+    # Compute AP per primitive
     per_class_ap = {}
     for prim in PRIMITIVES:
         y_true = all_gts[prim]
@@ -175,14 +216,15 @@ def main():
         else:
             per_class_ap[prim] = float(average_precision_score(y_true, y_score))
 
-    macro_ap = sum(v for v in per_class_ap.values() if v == v) / \
-               sum(1 for v in per_class_ap.values() if v == v)
+    # Macro AP across valid primitives
+    valid_vals = [v for v in per_class_ap.values() if v == v]
+    macro_ap = sum(valid_vals) / len(valid_vals) if valid_vals else float("nan")
 
     # Family AP
     family_ap = {}
     for fam, plist in FAMILIES.items():
         vals = [per_class_ap[p] for p in plist if per_class_ap[p] == per_class_ap[p]]
-        family_ap[fam] = sum(vals)/len(vals) if vals else float("nan")
+        family_ap[fam] = sum(vals) / len(vals) if vals else float("nan")
 
     # Pretty print
     print("\n=== Per-class AP ===")
@@ -193,7 +235,8 @@ def main():
     for k, v in family_ap.items():
         print(f"{k:12s} : {v:.4f}" if v == v else f"{k:12s} : NaN")
 
-    print(f"\nMacro AP (all primitives): {macro_ap:.4f}")
+    print(f"\nMacro AP (all primitives): {macro_ap:.4f}" if macro_ap == macro_ap else "\nMacro AP: NaN")
+
 
 if __name__ == "__main__":
     main()
