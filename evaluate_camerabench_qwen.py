@@ -2,6 +2,7 @@ import os
 import argparse
 import torch
 import numpy as np
+import csv
 from PIL import Image
 from datasets import load_dataset
 from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
@@ -20,14 +21,14 @@ QUESTION_TEMPLATES = {
     "dolly-in": "Does the camera move forward (a dolly-in)? Answer yes or no.",
     "dolly-out": "Does the camera move backward (a dolly-out)? Answer yes or no.",
     "pedestal-up": "Does the camera move straight up (a pedestal up)? Answer yes or no.",
-    "pedestal-down": "Does the camera move straight down (a pedestal down)? Answer yes or no.",
+    "pedestal-down": "Does the camera move straight down? Answer yes or no.",
     "truck-right": "Does the camera move sideways to the right (a truck right)? Answer yes or no.",
     "truck-left": "Does the camera move sideways to the left (a truck left)? Answer yes or no.",
-    "zoom-in": "Does the camera zoom in (change focal length to magnify)? Answer yes or no.",
+    "zoom-in": "Does the camera zoom in? Answer yes or no.",
     "zoom-out": "Does the camera zoom out? Answer yes or no.",
-    "pan-right": "Does the camera pan right (rotate to the right on the horizontal axis)? Answer yes or no.",
-    "pan-left": "Does the camera pan left? Answer yes or no.",
-    "tilt-up": "Does the camera tilt up (rotate upward)? Answer yes or no.",
+    "pan-right": "Does the camera pan right (rotate to the right)? Answer yes or no.",
+    "pan-left": "Does the camera pan left (rotate to the left)? Answer yes or no.",
+    "tilt-up": "Does the camera tilt up? Answer yes or no.",
     "tilt-down": "Does the camera tilt down? Answer yes or no.",
     "roll-CW": "Does the camera roll clockwise? Answer yes or no.",
     "roll-CCW": "Does the camera roll counterclockwise? Answer yes or no.",
@@ -104,6 +105,7 @@ def main():
     ap.add_argument("--split", default="test")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--local_data_root", default="./CameraBench")
+    ap.add_argument("--out_file", default="results.csv", help="Where to save results (csv/txt)")
     args = ap.parse_args()
 
     print("Loading dataset…")
@@ -156,6 +158,7 @@ def main():
         vals = [per_class_ap[p] for p in plist if not np.isnan(per_class_ap[p])]
         family_ap[fam] = sum(vals) / len(vals) if vals else float("nan")
 
+    # ---------- Print ----------
     print("\n=== Per-class AP ===")
     for k, v in per_class_ap.items():
         print(f"{k:12s} : {v:.4f}" if not np.isnan(v) else f"{k:12s} : NaN")
@@ -165,6 +168,20 @@ def main():
         print(f"{k:12s} : {v:.4f}" if not np.isnan(v) else f"{k:12s} : NaN")
 
     print(f"\nMacro AP (all primitives): {macro_ap:.4f}" if not np.isnan(macro_ap) else "Macro AP: NaN")
+
+    # ---------- Save ----------
+    with open(args.out_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Category", "AP"])
+        for k, v in per_class_ap.items():
+            writer.writerow([k, "NaN" if np.isnan(v) else f"{v:.4f}"])
+        writer.writerow([])
+        for k, v in family_ap.items():
+            writer.writerow([k, "NaN" if np.isnan(v) else f"{v:.4f}"])
+        writer.writerow([])
+        writer.writerow(["Macro_AP", "NaN" if np.isnan(macro_ap) else f"{macro_ap:.4f}"])
+
+    print(f"\nResults saved to {args.out_file}")
 
 if __name__ == "__main__":
     main()
