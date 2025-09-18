@@ -8,7 +8,7 @@
 #SBATCH -o logs/%x_%j.out       # log file
 
 module purge
-module load cuda/12.1           # adjust if CRCV uses different CUDA modules
+module load cuda/12.4           # adjust if CRCV uses different CUDA modules
 source activate qwen-radi-camera
 
 srun python evaluate_camerabench_qwen.py \
