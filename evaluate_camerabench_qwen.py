@@ -3,7 +3,6 @@ import argparse
 import torch
 import numpy as np
 import csv
-from PIL import Image
 from datasets import load_dataset
 from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
@@ -26,13 +25,13 @@ QUESTION_TEMPLATES = {
     "truck-left": "Does the camera move sideways to the left (a truck left)? Answer yes or no.",
     "zoom-in": "Does the camera zoom in? Answer yes or no.",
     "zoom-out": "Does the camera zoom out? Answer yes or no.",
-    "pan-right": "Does the camera pan right (rotate to the right)? Answer yes or no.",
-    "pan-left": "Does the camera pan left (rotate to the left)? Answer yes or no.",
+    "pan-right": "Does the camera pan right? Answer yes or no.",
+    "pan-left": "Does the camera pan left? Answer yes or no.",
     "tilt-up": "Does the camera tilt up? Answer yes or no.",
     "tilt-down": "Does the camera tilt down? Answer yes or no.",
     "roll-CW": "Does the camera roll clockwise? Answer yes or no.",
     "roll-CCW": "Does the camera roll counterclockwise? Answer yes or no.",
-    "no-motion": "Is the camera static with no intentional motion? Answer yes or no.",
+    "no-motion": "Is the camera static? Answer yes or no.",
 }
 
 FAMILIES = {
@@ -83,12 +82,11 @@ def yes_probability_on_video(model, processor, media_path: str, question: str) -
     vocab = tokenizer.get_vocab()
 
     yes_ids = [tokenizer.convert_tokens_to_ids(t) for t in ["yes", "Yes", "YES"] if t in vocab]
-    no_ids = [tokenizer.convert_tokens_to_ids(t) for t in ["no", "No", "NO"] if t in vocab]
 
-    if yes_ids or no_ids:
-        return float(probs[yes_ids].sum().item()) if yes_ids else 0.0
+    if yes_ids:
+        return float(probs[yes_ids].sum().item())
 
-    # fallback: decode text
+    # fallback: decode
     seq = model.generate(**inputs, max_new_tokens=3, do_sample=False)
     decoded = tokenizer.batch_decode(seq, skip_special_tokens=True)[0].strip().lower()
     if decoded.startswith("yes"):
@@ -105,7 +103,8 @@ def main():
     ap.add_argument("--split", default="test")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--local_data_root", default="./CameraBench")
-    ap.add_argument("--out_file", default="results.csv", help="Where to save results (csv/txt)")
+    ap.add_argument("--out_file", default="results.csv")
+    ap.add_argument("--raw_file", default="raw_scores.csv")
     args = ap.parse_args()
 
     print("Loading dataset…")
@@ -116,6 +115,7 @@ def main():
 
     all_scores = {k: [] for k in PRIMITIVES}
     all_gts = {k: [] for k in PRIMITIVES}
+    raw_rows = []
 
     n = len(ds) if args.limit == 0 else min(args.limit, len(ds))
     print(f"Evaluating {n} videos…")
@@ -126,7 +126,7 @@ def main():
         local_media = os.path.join(args.local_data_root, rel_path)
 
         if not os.path.exists(local_media):
-            print(f" WARN: [{i}] Skipped (file missing): {local_media}")
+            print(f" WARN: [{i}] Skipped (missing): {local_media}")
             continue
 
         gt = set(row["labels"])
@@ -134,10 +134,13 @@ def main():
             for prim in PRIMITIVES:
                 question = QUESTION_TEMPLATES[prim]
                 score = yes_probability_on_video(model, processor, local_media, question)
+                label = 1 if prim in gt else 0
                 all_scores[prim].append(score)
-                all_gts[prim].append(1 if prim in gt else 0)
+                all_gts[prim].append(label)
+
+                raw_rows.append([rel_path, prim, f"{score:.4f}", label])
         except Exception as e:
-            print(f" WARN: [{i}] Skipped (decode/model): {e}")
+            print(f" WARN: [{i}] Skipped (error): {e}")
             continue
 
     # ---------- Metrics ----------
@@ -158,7 +161,7 @@ def main():
         vals = [per_class_ap[p] for p in plist if not np.isnan(per_class_ap[p])]
         family_ap[fam] = sum(vals) / len(vals) if vals else float("nan")
 
-    # ---------- Print ----------
+    # ---------- Print summary ----------
     print("\n=== Per-class AP ===")
     for k, v in per_class_ap.items():
         print(f"{k:12s} : {v:.4f}" if not np.isnan(v) else f"{k:12s} : NaN")
@@ -167,9 +170,9 @@ def main():
     for k, v in family_ap.items():
         print(f"{k:12s} : {v:.4f}" if not np.isnan(v) else f"{k:12s} : NaN")
 
-    print(f"\nMacro AP (all primitives): {macro_ap:.4f}" if not np.isnan(macro_ap) else "Macro AP: NaN")
+    print(f"\nMacro AP: {macro_ap:.4f}" if not np.isnan(macro_ap) else "Macro AP: NaN")
 
-    # ---------- Save ----------
+    # ---------- Save summary ----------
     with open(args.out_file, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["Category", "AP"])
@@ -180,8 +183,14 @@ def main():
             writer.writerow([k, "NaN" if np.isnan(v) else f"{v:.4f}"])
         writer.writerow([])
         writer.writerow(["Macro_AP", "NaN" if np.isnan(macro_ap) else f"{macro_ap:.4f}"])
+    print(f"\nSummary saved to {args.out_file}")
 
-    print(f"\nResults saved to {args.out_file}")
+    # ---------- Save raw scores ----------
+    with open(args.raw_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["video", "primitive", "score", "label"])
+        writer.writerows(raw_rows)
+    print(f"Raw scores saved to {args.raw_file}")
 
 if __name__ == "__main__":
     main()
