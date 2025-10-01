@@ -121,6 +121,7 @@ def main():
     print(f"Evaluating {n} videos…")
 
     for i in range(n):
+        print('processing video', i)
         row = ds[i]
         rel_path = row["path"]
         local_media = os.path.join(args.local_data_root, rel_path)
