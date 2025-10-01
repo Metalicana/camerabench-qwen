@@ -8,8 +8,7 @@
 #SBATCH --mem=64G                          # memory
 #SBATCH --time=01:00:00                    # max walltime (hh:mm:ss)
 
-module purge
-module load cuda/12.4           # adjust if CRCV uses different CUDA modules
+module load anaconda       # adjust if CRCV uses different CUDA modules
 source activate qwen-radi
 
 srun python evaluate_camerabench_qwen.py \
