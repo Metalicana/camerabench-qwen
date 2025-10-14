@@ -628,5 +628,75 @@
       "D": "The sink under the window"
     },
     "correct_answer": "A"
+  },
+    {
+    "question_id": "066",
+    "question_type": "Perspective",
+    "prompt": "When viewing the staircase from above (Image 2), what does it reveal about the layout that isn’t visible from the bottom view in Image 1?",
+    "image_1": "Perspective/H1.png",
+    "image_2": "Perspective/H2.png",
+    "options": {
+      "A": "That the staircase continues upward to a second floor",
+      "B": "That there is a turn in the staircase leading to a split-level landing",
+      "C": "That the wall art on the landing is placed directly opposite the handrail",
+      "D": "That the door to the right of the stairs is actually a closet"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question_id": "067",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both views, where is the front door positioned relative to the staircase?",
+    "image_1": "Relative-Position/H1.png",
+    "image_2": "Relative-Position/H2.png",
+    "options": {
+      "A": "To the left of the staircase as you face it from the bottom",
+      "B": "Behind and below the staircase",
+      "C": "Directly in front of the top step",
+      "D": "To the right side of the landing as you ascend"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question_id": "068",
+    "question_type": "Obstacle",
+    "prompt": "What architectural feature could interfere with a direct descent from the top step if not navigated carefully?",
+    "image_1": "Obstacle/H1.png",
+    "image_2": "Obstacle/H2.png",
+    "options": {
+      "A": "The doorway beside the bottom of the stairs",
+      "B": "The newel post and railing base on the landing",
+      "C": "The handrail curving at the top",
+      "D": "The edge of the mirror near the hallway"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_id": "069",
+    "question_type": "Navigation",
+    "prompt": "If an agent is standing near the bench in Image 1 and needs to reach the top of the staircase, which path provides the most direct access?",
+    "image_1": "Navigation/H1.png",
+    "image_2": "Navigation/H2.png",
+    "options": {
+      "A": "Move past the front door and turn right toward the wall sign",
+      "B": "Go straight across the hallway and ascend the first visible step",
+      "C": "Circle left around the back of the stairs before turning upward",
+      "D": "Move behind the bench and turn toward the side closet"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question_id": "070",
+    "question_type": "Proximity",
+    "prompt": "Which object is physically closest to the foot of the staircase?",
+    "image_1": "Proximity/H1.png",
+    "image_2": "Proximity/H2.png",
+    "options": {
+      "A": "The coat rack with hooks",
+      "B": "The front door handle",
+      "C": "The wooden bench against the wall",
+      "D": "The door directly facing the stairs"
+    },
+    "correct_answer": "D"
   }
 ]
