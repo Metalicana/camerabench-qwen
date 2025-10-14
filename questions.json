@@ -1,746 +1,632 @@
-[    
-{
-  "question_id": "001",
-  "question_type": "Obstacle",
-  "prompt": "",
-  "image_1": "Obstacle/A1.jpg",
-  "image_2": "Obstacle/A2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+[
+  {
+    "question_id": "021",
+    "question_type": "Obstacle",
+    "prompt": "Assuming the front of the treadmill is the side with the control console (facing the user during use), which object would obstruct a person’s path if they tried to walk directly from the front of the treadmill toward the couch?",
+    "image_1": "Obstacle/A1.png",
+    "image_2": "Obstacle/A2.png",
+    "options": {
+      "A": "A red storage bin full of clothes",
+      "B": "A large brown armoire",
+      "C": "The backrest of the main sofa",
+      "D": "A doorway wall corner"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "002",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "022",
+    "question_type": "Perspective",
+    "prompt": "From Image 1, the treadmill is partially visible. What new spatial information does Image 2 reveal about its alignment relative to the doorway behind it?",
+    "image_1": "Perspective/A1.png",
+    "image_2": "Perspective/A2.png",
+    "options": {
+      "A": "The treadmill is facing directly toward the doorway",
+      "B": "The treadmill is aligned parallel to the doorway wall",
+      "C": "The treadmill is placed diagonally across the corner",
+      "D": "The treadmill is blocking entry to the room"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "003",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "023",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both views, where is the treadmill located in relation to the mirrored cabinet?",
+    "image_1": "Relative-Position/A1.png",
+    "image_2": "Relative-Position/A2.png",
+    "options": {
+      "A": "To the left of the mirrored cabinet",
+      "B": "Directly in front of the mirrored cabinet",
+      "C": "Behind the mirrored cabinet",
+      "D": "To the right of the mirrored cabinet"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "004",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "024",
+    "question_type": "Proximity",
+    "prompt": "Considering the layout from both images, which object is placed closest to the treadmill’s left side (left side defined from the user’s perspective when operating the treadmill)?",
+    "image_1": "Proximity/A1.png",
+    "image_2": "Proximity/A2.png",
+    "options": {
+      "A": "The red storage bin",
+      "B": "The sofa backrest",
+      "C": "The mirrored cabinet",
+      "D": "The wall with the white door"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "005",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "025",
+    "question_type": "Navigation",
+    "prompt": "If an agent were to walk from the center of the room toward the treadmill to begin using it, which obstacle would most likely require maneuvering around, based on the layout in both images?",
+    "image_1": "Navigation/A1.png",
+    "image_2": "Navigation/A2.png",
+    "options": {
+      "A": "The armchair near the left edge of Image 1",
+      "B": "The red bin directly behind the treadmill",
+      "C": "The mirrored cabinet beside the treadmill",
+      "D": "The sofa positioned across from the treadmill"
+    },
+    "correct_answer": "D"
   },
-  "correct_answer": ""
-}
-,{
-  "question_id": "006",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "026",
+    "question_type": "Perspective",
+    "prompt": "Assuming the headboard of the bed is considered the 'back' of the bed, what new spatial information about the room layout is revealed in Image 2 that is not visible in Image 1?",
+    "image_1": "Perspective/A3.png",
+    "image_2": "Perspective/A4.png",
+    "options": {
+      "A": "There is a doorway immediately beside the bed",
+      "B": "There is a large dresser directly in front of the bed",
+      "C": "There is a nightstand on only one side of the bed",
+      "D": "The room opens up into a hallway beside the curtains"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-}
-,{
-  "question_id": "002",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "027",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both views, where is the laundry hamper located in relation to the foot of the bed?",
+    "image_1": "Relative-Position/A3.png",
+    "image_2": "Relative-Position/A4.png",
+    "options": {
+      "A": "To the right and slightly forward of the foot of the bed",
+      "B": "Directly behind the headboard",
+      "C": "Beside the left nightstand",
+      "D": "In the corner near the lamp on the right side of the bed"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "002",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "028",
+    "question_type": "Obstacle",
+    "prompt": "If an agent were to walk directly from the foot of the bed toward the wall with the windows, what object would potentially block the path?",
+    "image_1": "Obstacle/A3.png",
+    "image_2": "Obstacle/A4.png",
+    "options": {
+      "A": "A small table between the windows",
+      "B": "A dresser positioned along the wall",
+      "C": "A floor lamp placed at the corner",
+      "D": "A hanging rack of jewelry on the wall"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "007",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "029",
+    "question_type": "Navigation",
+    "prompt": "If a person is entering the room from the left side of Image 1, which path would offer the clearest route to reach the right side of the bed (as seen from the foot of the bed)?",
+    "image_1": "Navigation/A3.png",
+    "image_2": "Navigation/A4.png",
+    "options": {
+      "A": "Circling around the foot of the bed on the right side",
+      "B": "Crossing between the two nightstands",
+      "C": "Walking behind the headboard",
+      "D": "Passing through the space between the dresser and the wall"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "008",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "030",
+    "question_type": "Proximity",
+    "prompt": "Which object is positioned closest to the right side of the bed (right side defined from the perspective of lying on the bed with head at the headboard)?",
+    "image_1": "Proximity/A3.png",
+    "image_2": "Proximity/A4.png",
+    "options": {
+      "A": "The dresser with jewelry hanging above",
+      "B": "The window with blinds",
+      "C": "The right-side nightstand with a lamp and tissue box",
+      "D": "The laundry hamper"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "009",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "031",
+    "question_type": "Perspective",
+    "prompt": "Assuming the headboard of the bed is the 'back' and the footboard is the 'front,' what new information about the room layout does Image 2 reveal that is not visible in Image 1?",
+    "image_1": "Perspective/A5.png",
+    "image_2": "Perspective/A6.png",
+    "options": {
+      "A": "That the room has a ceiling fan above the bed",
+      "B": "That a sofa is positioned to the right of the foot of the bed",
+      "C": "That a television is mounted across from the bed",
+      "D": "That the dresser is directly across from the bed"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "010",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "032",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both images, where is the left nightstand positioned in relation to the nearest door?",
+    "image_1": "Relative-Position/A5.png",
+    "image_2": "Relative-Position/A6.png",
+    "options": {
+      "A": "Directly beside the door on the left wall",
+      "B": "Across the room from the door",
+      "C": "At the foot of the bed, near the windows",
+      "D": "Between the door and the footboard of the bed"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "011",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "033",
+    "question_type": "Obstacle",
+    "prompt": "If an agent were to walk from the windows toward the head of the bed, which object would most likely obstruct a straight path?",
+    "image_1": "Obstacle/A5.png",
+    "image_2": "Obstacle/A6.png",
+    "options": {
+      "A": "The tall dresser next to the door",
+      "B": "The right nightstand",
+      "C": "The footboard of the bed",
+      "D": "The small lamp on the left nightstand"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "012",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "034",
+    "question_type": "Proximity",
+    "prompt": "Which object is closest to the right side of the bed (right side from the perspective of someone lying in bed with head on the pillows)?",
+    "image_1": "Proximity/A5.png",
+    "image_2": "Proximity/A6.png",
+    "options": {
+      "A": "The window with partially open blinds",
+      "B": "The sofa along the far wall",
+      "C": "The right nightstand with a reading lamp",
+      "D": "The closed white door"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "013",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "035",
+    "question_type": "Navigation",
+    "prompt": "If a person enters the room from the door seen in Image 1 and walks toward the windows, which route avoids all major furniture obstructions?",
+    "image_1": "Navigation/A5.png",
+    "image_2": "Navigation/A6.png",
+    "options": {
+      "A": "Walking along the left side of the bed between the nightstand and wall",
+      "B": "Cutting diagonally between the two nightstands",
+      "C": "Walking along the right side of the bed and passing the sofa",
+      "D": "Circling around the foot of the bed and staying near the windows"
+    },
+    "correct_answer": "D"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "014",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "036",
+    "question_type": "Perspective",
+    "prompt": "When approaching the bedroom from the hallway (Image 1), what new spatial detail becomes clear once inside the room (Image 2)?",
+    "image_1": "Perspective/B1.png",
+    "image_2": "Perspective/B2.png",
+    "options": {
+      "A": "That the bed is aligned with the hallway entrance",
+      "B": "That the bed faces a large mirror",
+      "C": "That there is a window directly behind the head of the bed",
+      "D": "That there is a desk along the right-hand wall"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "015",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "037",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both images, where is the window located relative to the hallway entrance?",
+    "image_1": "Relative-Position/B1.png",
+    "image_2": "Relative-Position/B2.png",
+    "options": {
+      "A": "To the right of the hallway entrance",
+      "B": "Directly opposite the hallway entrance",
+      "C": "Behind the door leading into the hallway",
+      "D": "To the left side corner of the room"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "016",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "038",
+    "question_type": "Obstacle",
+    "prompt": "What feature may make the hallway traversal slightly hazardous for a mobile agent navigating toward the bedroom?",
+    "image_1": "Obstacle/B1.png",
+    "image_2": "Obstacle/B2.png",
+    "options": {
+      "A": "A rug placed at the top of the stairs",
+      "B": "A narrow desk that juts into the hallway",
+      "C": "A pair of shallow steps between hallway and bedroom",
+      "D": "A slanted ceiling that lowers near the doorway"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "017",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "039",
+    "question_type": "Navigation",
+    "prompt": "What is the most direct path for an agent to reach the left bedside table once inside the bedroom from the hallway?",
+    "image_1": "Navigation/B1.png",
+    "image_2": "Navigation/B2.png",
+    "options": {
+      "A": "Walk straight to the foot of the bed, then left",
+      "B": "Circle around the right side of the bed",
+      "C": "Enter and turn immediately left along the wall",
+      "D": "Cross between the two pillows"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "018",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "040",
+    "question_type": "Proximity",
+    "prompt": "Which of the following objects is closest to the top of the two hallway steps shown in Image 1?",
+    "image_1": "Proximity/B1.png",
+    "image_2": "Proximity/B2.png",
+    "options": {
+      "A": "The foot of the bed",
+      "B": "The doorway frame",
+      "C": "The right bedside lamp",
+      "D": "The white door on the left side of the hallway"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "019",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "041",
+    "question_type": "Perspective",
+    "prompt": "Assuming the headboard is the back of the bed, what spatial information does Image 2 reveal that is not visible in Image 1?",
+    "image_1": "Perspective/B3.png",
+    "image_2": "Perspective/B4.png",
+    "options": {
+      "A": "There is a large dresser directly across from the foot of the bed",
+      "B": "There is an entrance to a walk-in closet located to the right of the bed",
+      "C": "There is a television mounted above the headboard",
+      "D": "There is a ceiling fan located above the closet"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "020",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "042",
+    "question_type": "Relative-Position",
+    "prompt": "Where is the closet entrance located relative to the bed, based on both views?",
+    "image_1": "Relative-Position/B3.png",
+    "image_2": "Relative-Position/B4.png",
+    "options": {
+      "A": "To the left of the bed, behind the nightstand",
+      "B": "Directly in front of the bed",
+      "C": "To the right side of the bed, across the room",
+      "D": "Directly behind the bedhead wall"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "021",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "043",
+    "question_type": "Obstacle",
+    "prompt": "Which of the following might make navigation from the closet entrance to the windowed wall more difficult for an agent?",
+    "image_1": "Obstacle/B3.png",
+    "image_2": "Obstacle/B4.png",
+    "options": {
+      "A": "The corner of the bed projects into the walking space",
+      "B": "A dresser is blocking the path",
+      "C": "There is a small bench along the path",
+      "D": "A rug is rolled up near the foot of the bed"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "022",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "044",
+    "question_type": "Proximity",
+    "prompt": "Which object is positioned closest to the foot-right corner of the bed (from the perspective of lying down)?",
+    "image_1": "Proximity/B3.png",
+    "image_2": "Proximity/B4.png",
+    "options": {
+      "A": "The closet entrance",
+      "B": "The left nightstand",
+      "C": "The set of windows facing the driveway",
+      "D": "The room’s main entrance door"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "023",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "045",
+    "question_type": "Navigation",
+    "prompt": "If an agent enters from the closet and needs to approach the left window (as seen in Image 1), what is the clearest route?",
+    "image_1": "Navigation/B3.png",
+    "image_2": "Navigation/B4.png",
+    "options": {
+      "A": "Move forward and cut across the bed diagonally",
+      "B": "Walk along the foot of the bed and turn left before the window",
+      "C": "Circle around the right side of the bed and follow the wall",
+      "D": "Turn immediately left at the closet entrance and cut through the space behind the bed"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "024",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "046",
+    "question_type": "Perspective",
+    "prompt": "Assuming the head of the bed is the end with the pillow against the wall, what does Image 2 reveal about the bed's orientation that is not clearly visible in Image 1?",
+    "image_1": "Perspective/D1.png",
+    "image_2": "Perspective/D2.png",
+    "options": {
+      "A": "That the bed is placed diagonally in the room",
+      "B": "That the head of the bed is directly beneath the window",
+      "C": "That the bed runs parallel to the left blue wall",
+      "D": "That the bed faces a closet door"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "025",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "047",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both views, where is the dresser positioned relative to the bed?",
+    "image_1": "Relative-Position/D1.png",
+    "image_2": "Relative-Position/D2.png",
+    "options": {
+      "A": "At the foot of the bed",
+      "B": "To the left of the bed when lying down",
+      "C": "Behind the headboard against the far wall",
+      "D": "Opposite the window-facing side of the room"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "026",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "048",
+    "question_type": "Obstacle",
+    "prompt": "If an agent moves from the dresser toward the nightstand, what object could obstruct a direct path?",
+    "image_1": "Obstacle/D1.png",
+    "image_2": "Obstacle/D2.png",
+    "options": {
+      "A": "The bookcase to the right",
+      "B": "The bed frame extending across the space",
+      "C": "A white laundry bin",
+      "D": "A swivel desk chair"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "027",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "049",
+    "question_type": "Navigation",
+    "prompt": "What is the clearest path for an agent to reach the bookshelf from the room’s entrance near the dresser?",
+    "image_1": "Navigation/D1.png",
+    "image_2": "Navigation/D2.png",
+    "options": {
+      "A": "Walk directly between the bed and dresser, then turn left",
+      "B": "Circle around the foot of the bed and continue past the nightstand",
+      "C": "Walk along the right wall beside the bed",
+      "D": "Cut across the mattress diagonally"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "028",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "050",
+    "question_type": "Proximity",
+    "prompt": "Which object is positioned closest to the pillow on the bed?",
+    "image_1": "Proximity/D1.png",
+    "image_2": "Proximity/D2.png",
+    "options": {
+      "A": "The window behind the nightstand",
+      "B": "The stack of books on the shelf",
+      "C": "The small drawer box on the nightstand",
+      "D": "The wooden dresser on the opposite side"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "029",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "051",
+    "question_type": "Perspective",
+    "prompt": "Assuming the head of the bed is where the pillows are placed, what new layout information is revealed in Image 2 that is not visible in Image 1?",
+    "image_1": "Perspective/E1.png",
+    "image_2": "Perspective/E2.png",
+    "options": {
+      "A": "There is another bookshelf at the foot of the bed",
+      "B": "There are three framed drawings mounted to the wall near the entrance",
+      "C": "The bed is aligned against the center of the wall",
+      "D": "There is a nightstand directly to the right of the bed"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "030",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "052",
+    "question_type": "Relative-Position",
+    "prompt": "Where is the red bookshelf located in relation to the bed, based on both images?",
+    "image_1": "Relative-Position/E1.png",
+    "image_2": "Relative-Position/E2.png",
+    "options": {
+      "A": "To the left of the bed (from the perspective of lying down)",
+      "B": "At the foot of the bed",
+      "C": "Behind the headboard of the bed",
+      "D": "To the right of the bed"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "031",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "053",
+    "question_type": "Obstacle",
+    "prompt": "If an agent attempts to walk from the closet toward the red bookshelf, which object would likely obstruct a direct path?",
+    "image_1": "Obstacle/E1.png",
+    "image_2": "Obstacle/E2.png",
+    "options": {
+      "A": "A large dresser near the window",
+      "B": "The edge of the bed",
+      "C": "A freestanding lamp",
+      "D": "The open door"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "032",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "054",
+    "question_type": "Proximity",
+    "prompt": "Which of the following objects is closest to the closet entrance seen in Image 1?",
+    "image_1": "Proximity/E1.png",
+    "image_2": "Proximity/E2.png",
+    "options": {
+      "A": "The red bookshelf",
+      "B": "The framed pictures on the wall",
+      "C": "The open bedroom door",
+      "D": "The corner of the bed"
+    },
+    "correct_answer": "D"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "033",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "055",
+    "question_type": "Navigation",
+    "prompt": "What is the clearest route for an agent to move from the doorway (visible in Image 1) to reach the window closest to the bookshelf (visible in Image 2)?",
+    "image_1": "Navigation/E1.png",
+    "image_2": "Navigation/E2.png",
+    "options": {
+      "A": "Pass through the closet and exit through a side door",
+      "B": "Walk along the right side of the bed and turn left past the bookshelf",
+      "C": "Circle around the foot of the bed and continue left",
+      "D": "Climb over the mattress directly"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "034",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "056",
+    "question_type": "Perspective",
+    "prompt": "What spatial detail becomes apparent in Image 1 that is not visible in Image 2 regarding the entrance layout?",
+    "image_1": "Perspective/F1.png",
+    "image_2": "Perspective/F2.png",
+    "options": {
+      "A": "There is a staircase located to the right of the front door",
+      "B": "There is a hallway directly behind the chairs",
+      "C": "There is a mirror mounted across from the door",
+      "D": "There is a large cabinet placed in front of the window"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "035",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "057",
+    "question_type": "Relative-Position",
+    "prompt": "Where is the small black side table positioned in relation to the window?",
+    "image_1": "Relative-Position/F1.png",
+    "image_2": "Relative-Position/F2.png",
+    "options": {
+      "A": "Directly in front of the middle window panel",
+      "B": "Between the two armchairs and under the left window",
+      "C": "To the right of both armchairs and window frame",
+      "D": "Pushed up against the far wall beneath the sign"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "036",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "058",
+    "question_type": "Obstacle",
+    "prompt": "What object would partially obstruct the path if an agent walked from the stairway (visible in Image 1) directly toward the wall-mounted coat rack?",
+    "image_1": "Obstacle/F1.png",
+    "image_2": "Obstacle/F2.png",
+    "options": {
+      "A": "The central light fixture hanging from the ceiling",
+      "B": "The rightmost armchair",
+      "C": "The door leading into the hallway",
+      "D": "The baseboard heater under the window"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "037",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "059",
+    "question_type": "Proximity",
+    "prompt": "Which object is positioned closest to the main front-facing window (center panel)?",
+    "image_1": "Proximity/F1.png",
+    "image_2": "Proximity/F2.png",
+    "options": {
+      "A": "The ceiling lamp fixture",
+      "B": "The side table with the glass lamp",
+      "C": "The front door",
+      "D": "The leftmost armchair"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "038",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "060",
+    "question_type": "Navigation",
+    "prompt": "If an agent enters the room from the door near the staircase, what is the most direct route to sit in the leftmost armchair?",
+    "image_1": "Navigation/F1.png",
+    "image_2": "Navigation/F2.png",
+    "options": {
+      "A": "Walk along the window wall, turn left at the first chair",
+      "B": "Walk diagonally across the wooden floor past the right chair",
+      "C": "Move along the wall with the coat hooks and cut left",
+      "D": "Circle behind both chairs to enter from the window side"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "039",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+    {
+    "question_id": "061",
+    "question_type": "Perspective",
+    "prompt": "When entering the kitchen from the dining area (as shown in Image 1), what new information about the kitchen layout becomes visible in Image 2?",
+    "image_1": "Perspective/G1.png",
+    "image_2": "Perspective/G2.png",
+    "options": {
+      "A": "There is a large central island obstructing movement",
+      "B": "The sink is located directly to the right of the entrance",
+      "C": "The stove and microwave are placed along the left-hand side wall",
+      "D": "The refrigerator is beside the sink under the window"
+    },
+    "correct_answer": "C"
   },
-  "correct_answer": ""
-},
-{
-  "question_id": "040",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "062",
+    "question_type": "Relative-Position",
+    "prompt": "Based on both images, where is the stove positioned relative to the main window above the sink?",
+    "image_1": "Relative-Position/G1.png",
+    "image_2": "Relative-Position/G2.png",
+    "options": {
+      "A": "To the left of the window and adjacent to the side wall",
+      "B": "To the right of the window beside the refrigerator",
+      "C": "Directly below the window",
+      "D": "Opposite the window along the far wall"
+    },
+    "correct_answer": "A"
   },
-  "correct_answer": ""
-},{
-  "question_id": "041",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "063",
+    "question_type": "Obstacle",
+    "prompt": "If an agent attempts to walk directly from the dining area to the microwave (above the stove), which feature could limit a straight path?",
+    "image_1": "Obstacle/G1.png",
+    "image_2": "Obstacle/G2.png",
+    "options": {
+      "A": "A black storage shelf near the wall",
+      "B": "The L-shaped kitchen counter at the entrance",
+      "C": "A small rug that curls at the corner",
+      "D": "A wall separating the fridge from the stove"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},{
-  "question_id": "042",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
+  {
+    "question_id": "064",
+    "question_type": "Navigation",
+    "prompt": "If an agent wants to reach the bananas placed on the corner counter from the dining side (Image 1), what is the clearest route?",
+    "image_1": "Navigation/G1.png",
+    "image_2": "Navigation/G2.png",
+    "options": {
+      "A": "Walk around the stove and circle behind the microwave",
+      "B": "Enter and move along the right edge of the counter toward the sink",
+      "C": "Enter, walk left past the stove, and approach the banana area from the front",
+      "D": "Pass between the counter and the windowed wall, turning left"
+    },
+    "correct_answer": "B"
   },
-  "correct_answer": ""
-},{
-  "question_id": "043",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "044",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "045",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "046",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "047",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "048",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "049",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "050",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "051",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-},{
-  "question_id": "052",
-  "question_type": "X",
-  "prompt": "",
-  "image_1": "X/B1.jpg",
-  "image_2": "X/B2.jpg",
-  "options": {
-    "A": "",
-    "B": "",
-    "C": "",
-    "D": ""
-  },
-  "correct_answer": ""
-}
+  {
+    "question_id": "065",
+    "question_type": "Proximity",
+    "prompt": "Which object is closest to the back door visible at the end of the kitchen in Image 2?",
+    "image_1": "Proximity/G1.png",
+    "image_2": "Proximity/G2.png",
+    "options": {
+      "A": "The wall-mounted calendar",
+      "B": "The stove and its backsplash",
+      "C": "The kitchen island",
+      "D": "The sink under the window"
+    },
+    "correct_answer": "A"
+  }
 ]
