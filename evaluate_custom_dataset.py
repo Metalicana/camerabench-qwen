@@ -3,8 +3,12 @@ import argparse
 import torch
 import json
 import csv
+import random
+import tempfile
+from PIL import Image, ImageEnhance
 from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 from qwen_vl_utils import process_vision_info
+
 
 # ---------- Qwen Setup ----------
 
@@ -18,9 +22,6 @@ def load_qwen(model_id: str):
 
 @torch.no_grad()
 def get_model_answer(model, processor, image_1_path, image_2_path, question: str, options: dict):
-    """
-    Runs the Qwen model on two images and a prompt, returns model's best guess (A/B/C/D).
-    """
     if not os.path.exists(image_1_path) or not os.path.exists(image_2_path):
         print(f"Missing one of the image paths: {image_1_path}, {image_2_path}")
         return None
@@ -43,6 +44,27 @@ def get_model_answer(model, processor, image_1_path, image_2_path, question: str
         if letter in decoded:
             return letter
     return "Unknown"
+
+
+# ---------- Augmentation Functions ----------
+
+def add_snow(image: Image.Image) -> Image.Image:
+    snow = Image.effect_noise(image.size, random.randint(30, 100)).convert("L")
+    snow = snow.point(lambda p: p * 0.6)
+    return Image.blend(image.convert("RGB"), snow.convert("RGB"), alpha=0.4)
+
+def add_low_light(image: Image.Image) -> Image.Image:
+    enhancer = ImageEnhance.Brightness(image)
+    return enhancer.enhance(0.4)
+
+def apply_random_augmentation(image_path: str) -> str:
+    image = Image.open(image_path).convert("RGB")
+    aug_fn = random.choice([add_snow, add_low_light])
+    augmented = aug_fn(image)
+
+    tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+    augmented.save(tmp.name)
+    return tmp.name
 
 
 # ---------- Main ----------
@@ -76,8 +98,8 @@ def main():
         img2 = os.path.join(args.data_root, q["image_2"])
         options = q["options"]
 
-        print(f"Processing Q{qid} ({qtype})...")
-
+        # ========== NORMAL VERSION ==========
+        print(f"Processing Q{qid} ({qtype}) [Normal]...")
         try:
             pred = get_model_answer(model, processor, img1, img2, prompt, options)
         except Exception as e:
@@ -85,18 +107,41 @@ def main():
             continue
 
         correct_flag = 1 if pred == correct else 0 if correct else "N/A"
-
-        result_row = [qid, qtype, pred, correct, correct_flag]
+        result_row = [qid, qtype, pred, correct, correct_flag, "Normal"]
         all_results.append(result_row)
 
-        # Prepare per-type logging
         if qtype not in results_by_type:
             results_by_type[qtype] = {"rows": [], "correct": [], "total": 0}
-
         results_by_type[qtype]["rows"].append(result_row)
         if correct_flag != "N/A":
             results_by_type[qtype]["correct"].append(correct_flag)
         results_by_type[qtype]["total"] += 1
+
+        # ========== AUGMENTED VERSION ==========
+        aug_qid = str(int(qid) + 200)
+        print(f"Processing Q{aug_qid} ({qtype}) [Augmented]...")
+
+        # Apply random augmentation to one of the two images
+        try:
+            img1_aug, img2_aug = img1, img2
+            if random.random() < 0.5:
+                img1_aug = apply_random_augmentation(img1)
+            else:
+                img2_aug = apply_random_augmentation(img2)
+
+            pred_aug = get_model_answer(model, processor, img1_aug, img2_aug, prompt, options)
+            correct_flag_aug = 1 if pred_aug == correct else 0 if correct else "N/A"
+            result_row_aug = [aug_qid, qtype, pred_aug, correct, correct_flag_aug, "Augmented"]
+            all_results.append(result_row_aug)
+
+            results_by_type[qtype]["rows"].append(result_row_aug)
+            if correct_flag_aug != "N/A":
+                results_by_type[qtype]["correct"].append(correct_flag_aug)
+            results_by_type[qtype]["total"] += 1
+
+        except Exception as e:
+            print(f"Skipped Q{aug_qid} due to error: {e}")
+            continue
 
     # ---------- Save per-type results ----------
     for qtype, data in results_by_type.items():
@@ -106,14 +151,14 @@ def main():
         out_path = os.path.join(type_dir, f"{qtype}_results.csv")
         with open(out_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow(["Question_ID", "Type", "Predicted", "Correct", "Match"])
+            writer.writerow(["Question_ID", "Type", "Predicted", "Correct", "Match", "Mode"])
             writer.writerows(data["rows"])
 
     # ---------- Save master results ----------
     master_csv_path = os.path.join(args.out_dir, "results.csv")
     with open(master_csv_path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["Question_ID", "Type", "Predicted", "Correct", "Match"])
+        writer.writerow(["Question_ID", "Type", "Predicted", "Correct", "Match", "Mode"])
         writer.writerows(all_results)
 
     print(f"\nMaster results saved to {master_csv_path}")
