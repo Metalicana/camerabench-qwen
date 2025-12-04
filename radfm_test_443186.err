@@ -1,8 +1,0 @@
-Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:05<00:20,  5.16s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:10<00:16,  5.51s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:15<00:10,  5.09s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:20<00:04,  5.00s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:21<00:00,  3.72s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:21<00:00,  4.36s/it]
-Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
-qwen-vl-utils using decord to read video.
-/home/ab575577/.conda/envs/qwen-radi/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `1e-06` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
-  warnings.warn(
-slurmstepd: error: *** JOB 443186 ON evc22 CANCELLED AT 2025-10-01T10:11:10 DUE TO TIME LIMIT ***
-slurmstepd: error: *** STEP 443186.0 ON evc22 CANCELLED AT 2025-10-01T10:11:10 DUE TO TIME LIMIT ***
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
